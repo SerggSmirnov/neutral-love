@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="22G91" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="GenerateImage" representedClassName="GenerateImage" syncable="YES">
+        <attribute name="caption" optional="YES" attributeType="String"/>
+        <attribute name="full" optional="YES" attributeType="Binary"/>
+        <attribute name="preview" optional="YES" attributeType="Binary"/>
+    </entity>
+</model>

@@ -36,6 +36,7 @@ final class TabBarCoordinator: Coordinator {
         let childNavigation = childCoordinators.map { $0.navigation }
         childCoordinators.forEach { $0.start() }
         navigationTabBar.viewControllers = childNavigation
+        navigationTabBar.selectedIndex = Constants.selectedMainModule
     }
 }
 
@@ -45,5 +46,13 @@ extension TabBarCoordinator: SettingsCoordinatorDelegate {
     func didTapLogOut() {
         childCoordinators = []
         delegate?.didFinish()
+    }
+}
+
+// MARK: - Constants
+
+extension TabBarCoordinator {
+     private enum Constants {
+        static let selectedMainModule: Int = 1
     }
 }

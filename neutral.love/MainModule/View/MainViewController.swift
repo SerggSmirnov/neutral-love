@@ -52,6 +52,7 @@ final class MainViewController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = Resources.Colors.MainModule.generateButtonBackground
         button.setTitle(Resources.Strings.MainModule.generateSettingsButtonEnabled, for: .normal)
+        button.layer.cornerRadius = 15
         button.titleLabel?.font = Resources.Fonts.SFProTextSemibold17
         button.tintColor = Resources.Colors.white
         button.addTarget(self, action: #selector(presentGenerateViewController), for: .touchUpInside)
@@ -225,9 +226,16 @@ extension MainViewController: UICollectionViewDataSource {
         ) as? MainCollectionViewCell else { return UICollectionViewCell() }
         
         if viewModel.outputs.isNotEmpty {
-            let urlString = viewModel.outputs[indexPath.row].preview
+            let previewUrlString = viewModel.outputs[indexPath.row].preview
+            let fullUrlString = viewModel.outputs[indexPath.row].full
+            let caption = viewModel.outputs[indexPath.row].caption
+            
+            viewModel.saveImageInDatabase(caption: caption,
+                                          preview: previewUrlString,
+                                          full: fullUrlString)
+                   
             cell.bindImage(collectionView,
-                           withURL: urlString,
+                           withURL: previewUrlString,
                            atIndexPath: indexPath,
                            viewModel: viewModel)
         }

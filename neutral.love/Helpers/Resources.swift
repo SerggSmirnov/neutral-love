@@ -19,6 +19,16 @@ enum Resources {
             static let dontHaveAnAccountText: String = "Don't have an account?"
         }
         
+        enum SignInModule {
+            static let emailText: String = "Email"
+            static let passwordAsterisksText: String = "******"
+            static let nameText: String = "Name"
+            static let signInButtonText: String = "Sign In"
+            static let signUpButtonText: String = "Sign Up"
+            static let passwordText: String = "Password"
+            static let dontHaveAnAccountText: String = "Don't have an account?"
+        }
+        
         enum MainModule {
             static let generateSettingsButtonEnabled = "Generate settings"
             static let generateSettingsButtonNotEnabled = "Generating..."
@@ -52,6 +62,10 @@ enum Resources {
         }
         
         enum AuthorizationModule {
+            static let signButtonsColor = UIColor(hexString: "5B5B93")
+        }
+        
+        enum SignInModule {
             static let signButtonsColor = UIColor(hexString: "5B5B93")
         }
         

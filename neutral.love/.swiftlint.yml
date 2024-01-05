@@ -9,3 +9,4 @@ disabled_rules:
     - identifier_name
     - nesting
     - void_function_in_ternary
+    - unused_closure_parameter

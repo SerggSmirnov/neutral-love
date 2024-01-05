@@ -105,7 +105,7 @@ final class GenerateViewController: UIViewController {
         viewModel.layout = viewModel.layoutData[layoutPikerView.selectedRow(inComponent: 0)]
         viewModel.amount = viewModel.amountData[amountPikerView.selectedRow(inComponent: 0)]
         
-        viewModel.fetchData()
+        viewModel.fetchDataOutputs()
         viewModel.countdownForGeneratingImages()
         dismiss(animated: true)
     }

@@ -27,9 +27,12 @@ protocol MainViewModelProtocol {
     var amount: String { get set }
     
     var imageProvider: ImageProvider { get set }
+    var coreDataManager: CoreDataManager { get set }
+    var apiManager: APIManager { get set }
     
-    func fetchData()
+    func fetchDataOutputs()
     func countdownForGeneratingImages()
+    func saveImageInDatabase(caption: String, preview: String, full: String)
 }
 
 protocol MainViewModelProtocolDelegate: AnyObject {
@@ -70,10 +73,13 @@ final class MainViewModel: MainViewModelProtocol {
     
     var outputs: [Output] = []
     
-    let apiManager = APIManager()
+    var apiManager = APIManager()
+    var coreDataManager = CoreDataManager.shared
     var imageProvider = ImageProvider()
     
-    func fetchData() {
+    // MARK: - Fetch Data Output
+    
+    func fetchDataOutputs() {
         Task {
             let orderID = try await apiManager.fetchOrderID(prompt: prompt,
                                                             style: style,
@@ -85,6 +91,25 @@ final class MainViewModel: MainViewModelProtocol {
         }
     }
     
+    // MARK: - Save image in Database
+    
+    func saveImageInDatabase(caption: String, preview: String, full: String) {
+        Task {
+            let fullData = try await apiManager.fetchData(
+                url: full
+            )
+            let previewData = try await apiManager.fetchData(
+                url: preview
+            )
+            
+            coreDataManager.saveImage(caption: caption,
+                                      full: fullData,
+                                      preview: previewData)
+        }
+    }
+    
+    // MARK: - Countdown for generating images
+    
     func countdownForGeneratingImages() {
         progressUIIsHidden.value = false
         generateButtonIsEnabled.value = false
@@ -95,13 +120,13 @@ final class MainViewModel: MainViewModelProtocol {
         
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
             timeLeft += 0.1
-            progress = timeLeft / Float(30) // 30 сек. задержка в АПИ
-            progressPercentages = Int((timeLeft / Float(30)) * 100)
+            progress = timeLeft / Float(120) // секунд задержка в АПИ
+            progressPercentages = Int((timeLeft / Float(120)) * 100)
             
             self?.textPercentages.value = "\(progressPercentages) %"
             self?.progresPercentages.value = progress
             
-            if timeLeft >= 30 {
+            if timeLeft >= 120 {
                 timer.invalidate()
                 self?.generateButtonIsEnabled.value = true
                 self?.progressUIIsHidden.value = true

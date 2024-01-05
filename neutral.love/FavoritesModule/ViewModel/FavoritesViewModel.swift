@@ -6,7 +6,30 @@
 //
 
 import Foundation
+import CoreData
 
-protocol FavoritesViewModelProtocol {}
+protocol FavoritesViewModelDelegate: AnyObject {
+    func didLoadImages()
+}
 
-final class FavoritesViewModel: FavoritesViewModelProtocol {}
+protocol FavoritesViewModelProtocol {
+    var coreDataManager: CoreDataManager { get set }
+    var fetchedResultController: NSFetchedResultsController<GenerateImage>? { get set }
+    var delegate: FavoritesViewModelDelegate? { get set }
+    
+    func updateCollectionViewWithCachedData()
+}
+
+final class FavoritesViewModel: FavoritesViewModelProtocol {
+    var fetchedResultController: NSFetchedResultsController<GenerateImage>?
+    var coreDataManager = CoreDataManager.shared
+    weak var delegate: FavoritesViewModelDelegate?
+    
+    func updateCollectionViewWithCachedData() {
+        do {
+            try fetchedResultController?.performFetch()
+        } catch {
+            print("Fetch request failed with error: \(error)")
+        }
+    }
+}

@@ -7,8 +7,10 @@
 
 import UIKit
 
-final class FavoritesView: UIView {
-    private lazy var collectionView: UICollectionView = {
+final class FavoritesView: UIView, UICollectionViewDelegate {
+    var viewModel: FavoritesViewModelProtocol?
+    
+    lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { section, _ in
             return self.createLayout(for: section)
         }
@@ -36,6 +38,7 @@ final class FavoritesView: UIView {
     private func setupDelegates() {
         collectionView.dataSource = self
         collectionView.delegate = self
+        viewModel?.delegate = self
     }
 
     private func createLayout(for section: Int) -> NSCollectionLayoutSection {
@@ -83,7 +86,7 @@ private extension FavoritesView {
             collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             collectionView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
@@ -92,24 +95,35 @@ private extension FavoritesView {
 
 extension FavoritesView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        30
+        guard let section = viewModel?.fetchedResultController?.sections?[section] else {
+            return 0
+        }
+        
+        return section.numberOfObjects
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: FavoritesCell.cellIdentifier,
+            withReuseIdentifier: .favoritesCellIdentifier,
             for: indexPath
         ) as? FavoritesCell else {
             return UICollectionViewCell()
         }
+        
+        let previewImageData = viewModel?.fetchedResultController?.object(at: indexPath).preview
+        cell.bind(image: previewImageData)
 
         return cell
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - FavoritesViewModelDelegate
 
-extension FavoritesView: UICollectionViewDelegate {}
+extension FavoritesView: FavoritesViewModelDelegate {
+    func didLoadImages() {
+        collectionView.reloadData()
+    }
+}
 
 // MARK: - String extension
 

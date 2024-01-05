@@ -17,13 +17,11 @@ final class ImageProvider {
         completion: @escaping (UIImage?) -> Void
     ) {
         if let cachedImage = imageCache.object(forKey: urlString as NSString) {
-            print("Use cache")
             completion(cachedImage)
         } else {
             guard let url = URL(string: urlString) else { return }
             
             DispatchQueue.global().async {
-                print("Fetching image")
                 if let data = try? Data(contentsOf: url),
                    let image = UIImage(data: data) {
                     self.imageCache.setObject(image, forKey: urlString as NSString)

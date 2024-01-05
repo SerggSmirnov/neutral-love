@@ -31,6 +31,14 @@ class FavoritesCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Bind image
+    
+    func bind(image: Data?) {
+        guard let image else { return }
+        
+        savedImage.image = UIImage(data: image)
+    }
 }
 
 // MARK: - Setup Appearence

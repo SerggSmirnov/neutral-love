@@ -9,7 +9,11 @@ import UIKit
 
 final class FavoritesViewController: UIViewController {
     private let favoritesView = FavoritesView()
-    private let viewModel: FavoritesViewModel
+    private var viewModel: FavoritesViewModelProtocol {
+        didSet {
+            favoritesView.viewModel = viewModel
+        }
+    }
 
     // MARK: Lifecycle
 
@@ -17,6 +21,16 @@ final class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         embedView()
         setupFavoritesViewConstraints()
+        
+        viewModel.fetchedResultController =
+        viewModel.coreDataManager.createPreparedFetchedResultsController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.updateCollectionViewWithCachedData()
+        favoritesView.collectionView.reloadData()
     }
 
     // MARK: Init

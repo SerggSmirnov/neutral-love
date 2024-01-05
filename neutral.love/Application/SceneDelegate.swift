@@ -30,4 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                         auth: appDIContainer.auth)
         appCoordinator?.start()
     }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        CoreDataManager.shared.saveContext()
+    }
 }
