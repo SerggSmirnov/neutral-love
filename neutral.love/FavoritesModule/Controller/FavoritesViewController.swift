@@ -32,6 +32,13 @@ final class FavoritesViewController: UIViewController {
         viewModel.updateCollectionViewWithCachedData()
         favoritesView.collectionView.reloadData()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.imagesFromDatabase = viewModel.coreDataManager.obtainSavedImages()
+        favoritesView.collectionView.reloadData()
+    }
 
     // MARK: Init
     init(viewModel: FavoritesViewModel) {
