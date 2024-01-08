@@ -35,7 +35,6 @@ final class CoreDataManager {
         if viewContext.hasChanges {
             do {
                 try viewContext.save()
-                print("-----viewContext save-----")
             } catch {
                 print("Save viewContext failed \(error.localizedDescription)")
             }
@@ -45,7 +44,6 @@ final class CoreDataManager {
     // MARK: - Save Image
     
     func saveImage(caption: String, full: Data?, preview: Data?) {
-        print("is NO dublicate in DB: \(isThereNoImageInDB(caption: caption))")
         if isThereNoImageInDB(caption: caption) {
             let generateImage = GenerateImage(context: viewContext)
             
@@ -56,14 +54,21 @@ final class CoreDataManager {
         }
     }
     
-    // MARK: - Obtain Images
+    // MARK: - Create Fetched Results Controller
     
-    func obtainSavedImages() -> [GenerateImage] {
+    func createPreparedFetchedResultsController() -> NSFetchedResultsController<GenerateImage> {
+        
         let imageFetchRequest = GenerateImage.fetchRequest()
+        imageFetchRequest.sortDescriptors = []
         
-        let result = try? viewContext.fetch(imageFetchRequest)
+        let resultController = NSFetchedResultsController(
+            fetchRequest: imageFetchRequest,
+            managedObjectContext: viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
         
-        return result ?? []
+        return resultController
     }
     
     // MARK: - Find dublicate in DB

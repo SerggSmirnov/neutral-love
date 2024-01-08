@@ -21,6 +21,16 @@ final class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         embedView()
         setupFavoritesViewConstraints()
+        
+        viewModel.fetchedResultController =
+        viewModel.coreDataManager.createPreparedFetchedResultsController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.updateCollectionViewWithCachedData()
+        favoritesView.collectionView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {

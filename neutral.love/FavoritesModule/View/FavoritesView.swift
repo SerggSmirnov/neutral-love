@@ -95,7 +95,11 @@ private extension FavoritesView {
 
 extension FavoritesView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.imagesFromDatabase.count ?? 0
+        guard let section = viewModel?.fetchedResultController?.sections?[section] else {
+            return 0
+        }
+        
+        return section.numberOfObjects
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -106,7 +110,7 @@ extension FavoritesView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let previewImageData = viewModel?.imagesFromDatabase[indexPath.row].preview
+        let previewImageData = viewModel?.fetchedResultController?.object(at: indexPath).preview
         cell.bind(image: previewImageData)
 
         return cell

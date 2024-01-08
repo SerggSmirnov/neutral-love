@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol FavoritesViewModelDelegate: AnyObject {
     func didLoadImages()
@@ -13,19 +14,22 @@ protocol FavoritesViewModelDelegate: AnyObject {
 
 protocol FavoritesViewModelProtocol {
     var coreDataManager: CoreDataManager { get set }
-    var imagesFromDatabase: [GenerateImage] { get set }
+    var fetchedResultController: NSFetchedResultsController<GenerateImage>? { get set }
     var delegate: FavoritesViewModelDelegate? { get set }
     
-    func reloadDatabase()
+    func updateCollectionViewWithCachedData()
 }
 
 final class FavoritesViewModel: FavoritesViewModelProtocol {
-    var imagesFromDatabase: [GenerateImage] = []
+    var fetchedResultController: NSFetchedResultsController<GenerateImage>?
     var coreDataManager = CoreDataManager.shared
     weak var delegate: FavoritesViewModelDelegate?
     
-    func reloadDatabase() {
-        imagesFromDatabase = coreDataManager.obtainSavedImages()
-        delegate?.didLoadImages()
+    func updateCollectionViewWithCachedData() {
+        do {
+            try fetchedResultController?.performFetch()
+        } catch {
+            print("Fetch request failed with error: \(error)")
+        }
     }
 }

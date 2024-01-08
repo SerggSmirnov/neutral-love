@@ -95,11 +95,11 @@ final class MainViewModel: MainViewModelProtocol {
     
     func saveImageInDatabase(caption: String, preview: String, full: String) {
         Task {
-            let fullData = try await apiManager.fetchDataFrom(
-                stringURL: full
+            let fullData = try await apiManager.fetchData(
+                url: full
             )
-            let previewData = try await apiManager.fetchDataFrom(
-                stringURL: preview
+            let previewData = try await apiManager.fetchData(
+                url: preview
             )
             
             coreDataManager.saveImage(caption: caption,
