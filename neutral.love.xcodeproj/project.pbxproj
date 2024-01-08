@@ -14,6 +14,7 @@
 		500BF1B62ADC1A4400CA5E09 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500BF1B42ADC1A4400CA5E09 /* TabBarController.swift */; };
 		500BF1B92ADC1A4B00CA5E09 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500BF1B82ADC1A4B00CA5E09 /* MainViewController.swift */; };
 		500BF1C02ADC2A9700CA5E09 /* Pods_neutral_love.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA9FD68FEBBF1CE66C412E6 /* Pods_neutral_love.framework */; };
+		501EDCBA2B4C430C0079CB75 /* Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 501EDCB92B4C430C0079CB75 /* Secret.swift */; };
 		50301AD62B2D980400B1759A /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50301AD42B2D980400B1759A /* DividerView.swift */; };
 		50301AD72B2D980400B1759A /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50301AD52B2D980400B1759A /* CustomTextField.swift */; };
 		50301AE52B2D9FCF00B1759A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50301AE42B2D9FCF00B1759A /* CoreDataManager.swift */; };
@@ -85,6 +86,7 @@
 		500BF1AF2ADC1A3B00CA5E09 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		500BF1B42ADC1A4400CA5E09 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		500BF1B82ADC1A4B00CA5E09 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		501EDCB92B4C430C0079CB75 /* Secret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secret.swift; sourceTree = "<group>"; };
 		50301AD42B2D980400B1759A /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		50301AD52B2D980400B1759A /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		50301AE42B2D9FCF00B1759A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 				50B5D4642AE8137500C10CC1 /* APIManager.swift */,
 				50B5D4662AE8150800C10CC1 /* APIModels.swift */,
 				506C30132AFE95D600E8B300 /* NetworkingError.swift */,
+				501EDCB92B4C430C0079CB75 /* Secret.swift */,
 			);
 			path = APIManager;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				E79EAFD92B08A0610037B5F4 /* SignUpView.swift in Sources */,
 				504A91332B28D7D5006647E6 /* AppFactory.swift in Sources */,
 				504A91312B28D7D5006647E6 /* MainFactory.swift in Sources */,
+				501EDCBA2B4C430C0079CB75 /* Secret.swift in Sources */,
 				50696D922ADDB16900E4B1AC /* MainAssembly.swift in Sources */,
 				E79EAFD42B0897A30037B5F4 /* UITextField + Extensions.swift in Sources */,
 				50B5D45A2AE41AB000C10CC1 /* GenerateAssembly.swift in Sources */,

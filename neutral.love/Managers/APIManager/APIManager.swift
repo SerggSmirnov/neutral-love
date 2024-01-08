@@ -9,8 +9,6 @@ import Foundation
 
 final class APIManager {
     
-    private let token = "v1.729f88cb97cb903e3543779cba57a4e6fad127114887e20b32563635af355e2b"
-    
     // MARK: - Fetch Order ID
     
     func fetchOrderID(prompt: String,
@@ -33,7 +31,7 @@ final class APIManager {
         let headers = [
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer \(token)"
+            "authorization": "Bearer \(Secret.token)"
         ]
         
         let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
@@ -61,7 +59,7 @@ final class APIManager {
     func fetchOrderInfoOutput(orderID: String) async throws -> [Output] {
         let headers = [
             "accept": "application/json",
-            "authorization": "Bearer \(token)"
+            "authorization": "Bearer \(Secret.token)"
         ]
         
         let delay: UInt64 = 120
