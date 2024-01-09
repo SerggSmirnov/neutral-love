@@ -1,5 +1,5 @@
 //
-//  FavoritesView.swift
+//  FavoritesViewController.swift
 //  neutral.love
 //
 //  Created by Philipp Zeppelin on 13.11.2023.
@@ -7,8 +7,12 @@
 
 import UIKit
 
-final class FavoritesView: UIView, UICollectionViewDelegate {
-    var viewModel: FavoritesViewModelProtocol?
+protocol FavoritesViewControllerCoordinator: AnyObject {
+    func didTapCollectionViewCell()
+}
+
+final class FavoritesViewController: UIViewController {
+    private var viewModel: FavoritesViewModelProtocol
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { section, _ in
@@ -21,26 +25,45 @@ final class FavoritesView: UIView, UICollectionViewDelegate {
         return collectionView
     }()
 
-    // MARK: Init
+    // MARK: Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupAppearence()
-        setupDelegates()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         embedView()
-        setupCollectionViewConstraints()
+        setupAppearence()
+        setupConstraints()
+        setupDelegates()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.imagesFromDatabase = viewModel.coreDataManager.obtainSavedImages()
+        collectionView.reloadData()
+    }
+
+    // MARK: Init
+    init(viewModel: FavoritesViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupDelegates() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        viewModel?.delegate = self
+        viewModel.delegate = self
     }
-
+    
+    private func setupAppearence() {
+        view.backgroundColor = Resources.Colors.backgroundGray
+        collectionView.backgroundColor = Resources.Colors.backgroundGray
+    }
+    
     private func createLayout(for section: Int) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(0.5),
@@ -64,42 +87,28 @@ final class FavoritesView: UIView, UICollectionViewDelegate {
     }
 }
 
-// MARK: - Setup Appearence
-
-extension FavoritesView {
-    private func setupAppearence() {
-        backgroundColor = Resources.Colors.backgroundGray
-        collectionView.backgroundColor = Resources.Colors.backgroundGray
-        translatesAutoresizingMaskIntoConstraints = false
-    }
-}
-
 // MARK: - Setup View and Constraints
 
-private extension FavoritesView {
+private extension FavoritesViewController {
     func embedView() {
-        addSubview(collectionView)
+        view.addSubview(collectionView)
     }
 
-    func setupCollectionViewConstraints() {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            collectionView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
-            collectionView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 }
 
 // MARK: - UICollectionViewDataSource
 
-extension FavoritesView: UICollectionViewDataSource {
+extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let section = viewModel?.fetchedResultController?.sections?[section] else {
-            return 0
-        }
-        
-        return section.numberOfObjects
+        viewModel.imagesFromDatabase.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -110,7 +119,7 @@ extension FavoritesView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let previewImageData = viewModel?.fetchedResultController?.object(at: indexPath).preview
+        let previewImageData = viewModel.imagesFromDatabase[indexPath.row].preview
         cell.bind(image: previewImageData)
 
         return cell
@@ -119,7 +128,7 @@ extension FavoritesView: UICollectionViewDataSource {
 
 // MARK: - FavoritesViewModelDelegate
 
-extension FavoritesView: FavoritesViewModelDelegate {
+extension FavoritesViewController: FavoritesViewModelDelegate {
     func didLoadImages() {
         collectionView.reloadData()
     }
