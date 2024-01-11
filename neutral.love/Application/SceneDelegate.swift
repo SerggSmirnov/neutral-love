@@ -29,11 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                         factory: appFactory,
                                         auth: appDIContainer.auth)
         appCoordinator?.start()
-        
-//        guard let windowScene = (scene as? UIWindowScene) else { return }
-//        window = UIWindow(windowScene: windowScene)
-//        window?.rootViewController = DetailViewController(viewModel: FavoritesViewModel())
-//        window?.makeKeyAndVisible()
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {

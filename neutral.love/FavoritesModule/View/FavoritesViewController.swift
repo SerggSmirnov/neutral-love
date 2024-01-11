@@ -13,6 +13,7 @@ protocol FavoritesViewControllerCoordinator: AnyObject {
 
 final class FavoritesViewController: UIViewController {
     private var viewModel: FavoritesViewModelProtocol
+    private weak var coordinator: FavoritesViewControllerCoordinator?
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { section, _ in
@@ -44,8 +45,9 @@ final class FavoritesViewController: UIViewController {
     }
 
     // MARK: Init
-    init(viewModel: FavoritesViewModelProtocol) {
+    init(viewModel: FavoritesViewModelProtocol, coordinator: FavoritesViewControllerCoordinator) {
         self.viewModel = viewModel
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -106,7 +108,7 @@ private extension FavoritesViewController {
 
 // MARK: - UICollectionViewDataSource
 
-extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.imagesFromDatabase.count
     }
@@ -123,6 +125,14 @@ extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewD
         cell.bind(image: previewImageData)
 
         return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension FavoritesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        coordinator?.didTapCollectionViewCell()
     }
 }
 

@@ -38,9 +38,7 @@ final class DetailViewController: UIViewController {
     
     // MARK: - downloadButtonPressed
     
-    @objc private func downloadButtonPressed() {
-        
-    }
+    @objc private func downloadButtonPressed() {}
     
     // MARK: Lifecycle
 
@@ -48,9 +46,9 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupAppearance()
-        embedView()
-        setConstraints()
-        setImage()
+        embedViews()
+        setupConstraints()
+        setupImage()
     }
     
     // MARK: Init
@@ -65,7 +63,7 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Embed Views
     
-    private func embedView() {
+    private func embedViews() {
         view.addSubview(generatedImageFull)
         view.addSubview(downloadButton)
     }
@@ -78,7 +76,7 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Set image
     
-    private func setImage() {}
+    private func setupImage() {}
     
 }
 
@@ -86,7 +84,7 @@ final class DetailViewController: UIViewController {
 
 extension DetailViewController {
     
-    private func setConstraints() {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             generatedImageFull.widthAnchor.constraint(
                 equalToConstant: view.frame.width - Constants.spacing * 2

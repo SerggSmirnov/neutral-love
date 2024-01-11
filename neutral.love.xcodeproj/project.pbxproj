@@ -523,8 +523,8 @@
 		E74396EE2ACE9FA1003B06B9 /* neutral.love */ = {
 			isa = PBXGroup;
 			children = (
-				500554082B30C9FB0033F8AC /* Managers */,
 				E7007D752ADAC2E4000DCBE0 /* Application */,
+				500554082B30C9FB0033F8AC /* Managers */,
 				504A91442B28D7FD006647E6 /* Generics */,
 				504A91142B28D7D5006647E6 /* Coordinator */,
 				E79EAFAE2B0897410037B5F4 /* AuthorizationModule */,
