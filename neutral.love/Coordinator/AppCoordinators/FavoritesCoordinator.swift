@@ -17,9 +17,17 @@ final class FavoritesCoordinator: Coordinator {
     }
     
     func start() {
-        let viewController = factory.makeFavoritesViewController()
+        let viewController = factory.makeFavoritesViewController(coordinator: self)
         factory.makeItemTabBar(navigation: navigation)
         navigation.navigationBar.prefersLargeTitles = true
         navigation.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - FavoritesViewControllerCoordinator
+
+extension FavoritesCoordinator: FavoritesViewControllerCoordinator {
+    func didTapCollectionViewCell() {
+        navigation.present(factory.makeDetailViewController(viewModel: FavoritesViewModel()), animated: true)
     }
 }
