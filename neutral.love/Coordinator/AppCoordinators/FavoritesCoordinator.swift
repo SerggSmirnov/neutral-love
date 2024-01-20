@@ -28,6 +28,16 @@ final class FavoritesCoordinator: Coordinator {
 
 extension FavoritesCoordinator: FavoritesViewControllerCoordinator {
     func didTapCollectionViewCell() {
-        navigation.present(factory.makeDetailViewController(viewModel: FavoritesViewModel()), animated: true)
+        navigation.present(factory.makeDetailViewController(coordinator: self),
+                           animated: true)
+    }
+}
+
+extension FavoritesCoordinator: DetailViewControllerCoordinator {
+    func showAlertSaveImageSuccess(to viewController: UIViewController) {
+        let alert = UIAlertController(title: "Success", message: "Image saved to your gallery", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default)
+        alert.addAction(okAction)
+        viewController.present(alert, animated: true)
     }
 }

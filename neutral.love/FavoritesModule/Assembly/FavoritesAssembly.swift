@@ -8,10 +8,9 @@
 import Foundation
 
 final class FavoritesAssembly {
-    static func configure(coordinator: FavoritesViewControllerCoordinator) -> FavoritesViewController {
-        let viewModel = FavoritesViewModel()
-        let viewController = FavoritesViewController(viewModel: viewModel,
-                                                     coordinator: coordinator)
-        return viewController
+    static func configure(coordinator: FavoritesViewControllerCoordinator,
+                          viewModel: FavoritesViewModelProtocol) -> FavoritesViewController {
+        FavoritesViewController(viewModel: viewModel,
+                                coordinator: coordinator)
     }
 }
