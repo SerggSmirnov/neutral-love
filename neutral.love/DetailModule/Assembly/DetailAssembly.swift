@@ -8,7 +8,9 @@
 import UIKit
 
 final class DetailAssembly {
-    static func configure(viewModel: FavoritesViewModelProtocol) -> DetailViewController {
-        DetailViewController(viewModel: viewModel)
+    static func configure(viewModel: FavoritesViewModelProtocol,
+                          coordinator: DetailViewControllerCoordinator) -> DetailViewController {
+        DetailViewController(viewModel: viewModel, 
+                             coordinator: coordinator)
     }
 }

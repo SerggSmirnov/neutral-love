@@ -8,21 +8,24 @@
 import UIKit
 
 protocol FavoritesFactory {
+    var viewModel: FavoritesViewModelProtocol { get set }
+    
     func makeFavoritesViewController(coordinator: FavoritesViewControllerCoordinator) -> UIViewController
-    func makeDetailViewController(viewModel: FavoritesViewModelProtocol) -> UIViewController
+    func makeDetailViewController(coordinator: DetailViewControllerCoordinator) -> UIViewController
     func makeItemTabBar(navigation: UINavigationController)
 }
 
 struct FavoritesFactoryImp: FavoritesFactory {
+    var viewModel: FavoritesViewModelProtocol = FavoritesViewModel()
     
     func makeFavoritesViewController(coordinator: FavoritesViewControllerCoordinator) -> UIViewController {
-        let viewController = FavoritesAssembly.configure(coordinator: coordinator)
+        let viewController = FavoritesAssembly.configure(coordinator: coordinator, viewModel: viewModel)
         viewController.title = Resources.Strings.TabBarModule.favorites
         return viewController
     }
     
-    func makeDetailViewController(viewModel: FavoritesViewModelProtocol) -> UIViewController {
-        DetailViewController(viewModel: viewModel)
+    func makeDetailViewController(coordinator: DetailViewControllerCoordinator) -> UIViewController {
+        DetailViewController(viewModel: viewModel, coordinator: coordinator)
     }
     
     func makeItemTabBar(navigation: UINavigationController) {

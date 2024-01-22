@@ -35,12 +35,14 @@ final class FavoritesViewController: UIViewController {
         setupAppearence()
         setupConstraints()
         setupDelegates()
+        
+        viewModel.fetchedResultController = viewModel.coreDataManager.createPreparedFetchedResultsController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.imagesFromDatabase = viewModel.coreDataManager.obtainSavedImages()
+        viewModel.updateCollectionViewWithCachedData()
         collectionView.reloadData()
     }
 
@@ -110,7 +112,11 @@ private extension FavoritesViewController {
 
 extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.imagesFromDatabase.count
+        guard let section = viewModel.fetchedResultController?.sections?[section] else {
+            return 0
+        }
+        
+        return section.numberOfObjects
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -121,7 +127,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let previewImageData = viewModel.imagesFromDatabase[indexPath.row].preview
+        let previewImageData = viewModel.fetchedResultController?.object(at: indexPath).preview
         cell.bind(image: previewImageData)
 
         return cell
@@ -132,6 +138,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.indexPath.value = indexPath
         coordinator?.didTapCollectionViewCell()
     }
 }

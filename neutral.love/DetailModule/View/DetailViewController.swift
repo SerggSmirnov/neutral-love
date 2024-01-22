@@ -7,12 +7,16 @@
 
 import UIKit
 
+protocol DetailViewControllerCoordinator: AnyObject {
+    func showAlertSaveImageSuccess(to: UIViewController)
+}
+
 final class DetailViewController: UIViewController {
     
     // MARK: - Properties
     
     private var viewModel: FavoritesViewModelProtocol
-    private weak var coordinator: MainViewControllerCoordinator?
+    private weak var coordinator: DetailViewControllerCoordinator?
     
     private var generatedImageFull: UIImageView = {
         let image = UIImageView()
@@ -38,7 +42,12 @@ final class DetailViewController: UIViewController {
     
     // MARK: - downloadButtonPressed
     
-    @objc private func downloadButtonPressed() {}
+    @objc private func downloadButtonPressed() {
+        guard let image = generatedImageFull.image else { return }
+        
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        coordinator?.showAlertSaveImageSuccess(to: self)
+    }
     
     // MARK: Lifecycle
 
@@ -52,8 +61,10 @@ final class DetailViewController: UIViewController {
     }
     
     // MARK: Init
-    init(viewModel: FavoritesViewModelProtocol) {
+    init(viewModel: FavoritesViewModelProtocol,
+         coordinator: DetailViewControllerCoordinator) {
         self.viewModel = viewModel
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -76,7 +87,15 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Set image
     
-    private func setupImage() {}
+    private func setupImage() {
+        let indexPath = viewModel.indexPath.value
+        guard let fullImageData = viewModel
+            .fetchedResultController?
+            .object(at: indexPath)
+            .full else { return }
+        
+        generatedImageFull.image = UIImage(data: fullImageData)
+    }
     
 }
 
