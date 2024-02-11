@@ -39,6 +39,7 @@ class AppCoordinator: Coordinator {
     private func startSomeCoordinator() {
         guard let auth else { return }
         
+        auth.isUserLogin()
         auth.isSessionActive ? startTabBarCoordinator() : startSignInCoordinator()
     }
     

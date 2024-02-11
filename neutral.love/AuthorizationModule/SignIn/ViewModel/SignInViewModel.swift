@@ -6,23 +6,19 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 protocol SignInViewModelProtocol {
-    var logInAuth: LogInAuth? { get set }
-    func logIn()
+    var auth: AuthMock? { get set }
 }
 
 final class SignInViewModel: SignInViewModelProtocol {
     
-    var logInAuth: LogInAuth?
+    var auth: AuthMock?
 
     // MARK: Init
     
-    init(logInAuth: LogInAuth) {
-        self.logInAuth = logInAuth
-    }
-    
-    func logIn() {
-        logInAuth?.logIn()
+    init(auth: AuthMock) {
+        self.auth = auth
     }
 }

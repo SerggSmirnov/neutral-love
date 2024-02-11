@@ -47,7 +47,8 @@ final class FavoritesViewController: UIViewController {
     }
 
     // MARK: Init
-    init(viewModel: FavoritesViewModelProtocol, coordinator: FavoritesViewControllerCoordinator) {
+    init(viewModel: FavoritesViewModelProtocol, 
+         coordinator: FavoritesViewControllerCoordinator) {
         self.viewModel = viewModel
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
