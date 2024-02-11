@@ -1,6 +1,0 @@
-framework module Pods_neutral_love {
-  umbrella header "Pods-neutral.love-umbrella.h"
-
-  export *
-  module * { export * }
-}

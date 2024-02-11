@@ -11,7 +11,7 @@ struct SignInFactory {
     let appDIContainer: AppDIContainer
     
     func makeSignInViewControler(coordinator: SignInViewControllerCoordinator) -> UIViewController {
-        SignInViewController(viewModel: SignInViewModel(logInAuth: appDIContainer.auth),
+        SignInViewController(viewModel: SignInViewModel(auth: appDIContainer.auth),
                              coordinator: coordinator)
     }
 }
