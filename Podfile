@@ -7,4 +7,6 @@ target 'neutral.love' do
 
   # Pods for neutral.love
 pod 'SwiftLint'
+pod 'FirebaseAuth'
+pod 'FirebaseFirestore'
 end

@@ -6,17 +6,24 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 protocol SessionCheckerAuth {
     var isSessionActive: Bool { get }
+    
+    func isUserLogin()
 }
 
 protocol LogInAuth {
-    func logIn()
+    func logIn(withEmail email: String, password: String)
 }
 
 protocol LogOutAuth {
     func logOut()
+}
+
+protocol SignUpAuth {
+    func createUser(withEmail email: String, password: String)
 }
 
 final class AuthMock {
@@ -29,13 +36,29 @@ extension AuthMock: SessionCheckerAuth {
     var isSessionActive: Bool {
         session
     }
+    
+    func isUserLogin() {
+        if Auth.auth().currentUser != nil {
+            session = true
+        } else {
+            session = false
+        }
+    }
 }
 
 // MARK: - LogInAuth
 
 extension AuthMock: LogInAuth {
-    func logIn() {
-        session = true
+    func logIn(withEmail email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] _, error in
+            
+            if let error = error {
+                let textError = "Sign-in error: \(error.localizedDescription)"
+                print(textError)
+            } else {
+                self?.session = true
+            }
+        }
     }
 }
 
@@ -43,6 +66,27 @@ extension AuthMock: LogInAuth {
 
 extension AuthMock: LogOutAuth {
     func logOut() {
-        session = false
+        do {
+            try Auth.auth().signOut()
+            self.session = false
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
+}
+
+// MARK: - SignUpAuth
+
+extension AuthMock: SignUpAuth {
+    func createUser(withEmail email: String, password: String) {
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] _, error in
+            
+            if let error = error {
+                let textError = "Create user error: \(error.localizedDescription)"
+                print(textError)
+            } else {
+                self?.session = true
+            }
+        }
     }
 }
